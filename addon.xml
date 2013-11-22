@@ -20,7 +20,7 @@
 		<license>GNU GENERAL PUBLIC LICENSE. Version 3, 29 June 2007</license>
 		<forum></forum>
 		<website>http://brickybox.com</website>
-		<source>https://github.com/bricky/xbmc-addon-tvtumbler</source>
+		<source>https://github.com/bricky/xbmc-addon-tvtumbler-web</source>
 		<email>xbmc-addon@tvtumbler.com</email>
 	</extension>
 </addon>
