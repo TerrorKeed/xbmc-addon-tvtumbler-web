@@ -1,0 +1,239 @@
+body {
+	background-color: #222;
+	color: #eee;
+	font-family: 'Helvetica Neue', sans-serif;
+	font-weight: 300;
+}
+
+#topmenu {
+	position: fixed;
+	top: 0; left: 0;
+	height: 30px;
+	width: 100%;
+	background-color: #111;
+	border-bottom: 1px solid #aaa;
+	text-align: center;
+	white-space: nowrap;
+	overflow: hidden;
+	z-index: 50;
+}
+
+#topmenu a {
+	text-decoration: none;
+	font-size: 20px;
+	font-weight: 500;
+	color: #aaa;
+	display: inline-block;
+	padding: 3px 20px;
+	/*font-variant: small-caps;*/
+}
+
+#topmenu a:hover {
+	color: white;
+}
+
+#topmenu a.selected {
+	background-color: #333;
+	color: white;
+}
+
+#content {
+	margin-top: 30px; /* matches the height of #topmenu */
+	text-align: center;
+}
+
+#content.loading {
+	min-height: 300px;
+	background-image: url(../images/bar-loader.gif); 
+	background-repeat:no-repeat; 
+	background-position: center center;
+}
+
+.calendar img.epimg {
+	max-width: 124px;
+	max-height: 90px;
+	box-sizing: border-box;
+	border: 2px solid #888;
+	border-radius: 3px;
+	margin: 2px;
+}
+
+.calendar img.epDlOverlay {
+	width: 25px;
+	height: 25px;
+	position: absolute;
+	top: 0; left: 0;
+	z-index: 10;
+}
+
+.calendar div.day_head {
+	width: 140px;
+	height: 50px;
+	position: relative;
+}
+
+.calendar div.day_name {
+	position: absolute;
+	top: 0; left: 5px;
+	font-size: 30px;
+	font-weight: 200;
+}
+
+.calendar div.mon_name {
+	position: absolute;
+	bottom: 0; left: 5px;
+	color: #777;
+	font-weight: 200;
+}
+
+.calendar div.d_of_mon {
+	position: absolute;
+	bottom: 0; right: 5px;
+	font-size: 28px;
+	font-weight: 300;
+}
+
+.calendar div.cal_episode {
+	width: 130px;
+	height: 110px;
+	overflow: hidden;
+	position: relative;
+	background-color: #4a4a4a;
+	border: 1px solid #222;
+	border-radius: 5px;
+	margin: 0 0 5px 5px;
+}
+
+.calendar div.epnum {
+	position: absolute;
+	top: 2px; right: 7px;
+	font-size: 24px;
+	color: #4f4;
+	text-shadow: 2px 2px 5px rgba(0, 0, 0, 1);
+}
+
+.calendar div.epname {
+	position: absolute;
+	bottom: 22px; left: 0;
+	padding: 0 3px;
+	width: 98%;
+	font-size: 10px;
+	color: #4f4;
+	text-shadow: 1px 1px 3px rgba(0, 0, 0, 1);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	text-align: left;
+}
+
+.calendar div.showname {
+	position: absolute;
+	bottom: 2px; left: 0;
+	padding: 0 3px;
+	width: 98%;
+	white-space: nowrap;
+	overflow: hidden;
+	text-aling: left;
+	text-overflow: ellipsis;
+	text-align: left;
+}
+
+.downloads tr.dlrow {
+	border: 1px solid transparent;
+}
+
+.downloads th, .downloads td {
+	padding: 1px 5px;
+	border-top: 1px solid transparent;
+	border-bottom: 1px solid transparent;
+}
+
+.downloads tr.dlrow:hover td {
+	background-color: rgb(51, 51, 51);
+	border-top: 1px solid #888;
+	border-bottom: 1px solid #888;
+}
+
+.downloads tr.dlrow td:first-child {
+	border-left: 1px solid transparent;
+}
+
+.downloads tr.dlrow td:last-child {
+	border-right: 1px solid transparent;
+}
+
+.downloads tr.dlrow:hover td:first-child {
+	border-left: 1px solid #888;
+	border-top-left-radius: 5px;
+	border-bottom-left-radius: 5px;
+}
+
+.downloads tr.dlrow:hover td:last-child {
+	border-right: 1px solid #888;
+	border-top-right-radius: 5px;
+	border-bottom-right-radius: 5px;
+}
+
+.downloads td.Running {
+	color: blue;
+}
+
+.downloads td.Downloaded {
+	color: green;
+}
+
+.downloads td.Failed {
+	color: red;
+}
+
+
+
+.shows tr.showrow {
+	border: 1px solid transparent;
+}
+
+.shows th, .shows td {
+	padding: 1px 8px;
+	border-top: 1px solid transparent;
+	border-bottom: 1px solid transparent;
+}
+
+.shows tr.showrow:hover td {
+	background-color: rgb(51, 51, 51);
+	border-top: 1px solid #888;
+	border-bottom: 1px solid #888;
+}
+
+.shows tr.showrow td:first-child {
+	border-left: 1px solid transparent;
+}
+
+.shows tr.showrow td:last-child {
+	border-right: 1px solid transparent;
+}
+
+.shows tr.showrow:hover td:first-child {
+	border-left: 1px solid #888;
+	border-top-left-radius: 5px;
+	border-bottom-left-radius: 5px;
+}
+
+.shows tr.showrow:hover td:last-child {
+	border-right: 1px solid #888;
+	border-top-right-radius: 5px;
+	border-bottom-right-radius: 5px;
+}
+
+.shows img.imgQuality {
+	max-height: 20px;
+	position: absolute;
+	top: 0px;
+}
+
+.shows td.ignore {
+	color: red;
+}
+
+.shows td.follow {
+	color: green;
+}

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<addon id="webinterface.tvtumbler" name="TvTumbler Web UI" version="0.0.1"
+	provider-name="Bricky">
+	<requires>
+		<import addon="xbmc.gui" version="4.0.0" />
+		<import addon="service.tvtumbler" version="0.1.0" />
+	</requires>
+	<extension point="xbmc.gui.webinterface" />
+    <extension point="xbmc.addon.repository" name="TvTumbler addon repository">
+		<info compressed="false">http://repo.tvtumbler.com/addons.xml</info>
+		<checksum>http://repo.tvtumbler.com/addons.xml.md5</checksum>
+		<datadir zip="true">http://repo.tvtumbler.com</datadir>
+	</extension>
+	<extension point="xbmc.addon.metadata">
+		<platform>all</platform>
+		<language />
+		<summary lang="en">Web Interface for TvTumbler</summary>
+		<description lang="en">Automatically download new episodes of followed TV shows as they air. </description>
+		<disclaimer lang="en">It is your responsibility to comply with all legal and copyright requirements in your country.</disclaimer>
+		<license>GNU GENERAL PUBLIC LICENSE. Version 3, 29 June 2007</license>
+		<forum></forum>
+		<website>http://brickybox.com</website>
+		<source>https://github.com/bricky/xbmc-addon-tvtumbler</source>
+		<email>xbmc-addon@tvtumbler.com</email>
+	</extension>
+</addon>
