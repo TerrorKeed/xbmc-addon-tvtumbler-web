@@ -23,7 +23,7 @@ var quality = {
 	FULLHDBLURAY:		1 << 8,		//	256
 
 	UNKNOWN_QUALITY:	1 << 15,	// 32768
-	                  	
+					  	
 	/**
 	 * These are image files in the 'images' folder.
 	 */

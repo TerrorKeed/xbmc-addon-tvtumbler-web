@@ -53,7 +53,7 @@ var api = {
 	get_all_shows: function(properties, cb) {
 		if (properties === null) {
 			properties=['tvshowid', 'name', 'tvdb_id', 'followed', 'wanted_quality', 'fanart',
-                        'thumbnail', 'poster', 'banner'];
+						'thumbnail', 'poster', 'banner'];
 		}
 		return this._call('get_all_shows', [properties], cb);
 	},
@@ -70,7 +70,7 @@ var api = {
 	get_shows: function(tvdb_ids, properties, cb) {
 		if (properties === null) {
 			properties=['tvshowid', 'name', 'tvdb_id', 'followed', 'wanted_quality', 'fanart',
-                        'thumbnail', 'poster', 'banner'];
+						'thumbnail', 'poster', 'banner'];
 		}
 		return this._call('get_shows', [tvdb_ids, properties], cb);
 	},
@@ -121,8 +121,8 @@ var api = {
 	get_running_downloads: function(properties, sort_by, cb) {
 		if (properties === null) {
 			properties=['rowid', 'key', 'name', 'status', 'status_text', 'total_size',
-			            'downloaded_size', 'download_speed', 'start_time', 'source',
-			            'downloader'];
+						'downloaded_size', 'download_speed', 'start_time', 'source',
+						'downloader'];
 		}
 		if (sort_by === null) {
 			sort_by='start_time';
@@ -142,7 +142,7 @@ var api = {
 	get_non_running_downloads: function(properties, limit, cb) {
 		if (properties === null) {
 			properties=['rowid', 'key', 'name', 'final_status', 'total_size',
-                        'start_time', 'finish_time', 'source', 'quality'];
+						'start_time', 'finish_time', 'source', 'quality'];
 		}
 		if (limit === null) {
 			limit = 30;
@@ -153,15 +153,15 @@ var api = {
 	/**
 	 *	Does a GetSeries.php search on thetvdb.
 	 *	Returns an array objects, one for each found show (may be empty), with the following properties:
-	 *        'seriesid'    - the tvdb_id
-	 *        'language'
-	 *        'seriesname'
-	 *        'overview'
-	 *        'firstaired'
-	 *        'network'
-	 *        'imdb_id'
-	 *        'zap2it_id'
-	 *        'aliasnames'    - a list, if present.
+	 *		'seriesid'	- the tvdb_id
+	 *		'language'
+	 *		'seriesname'
+	 *		'overview'
+	 *		'firstaired'
+	 *		'network'
+	 *		'imdb_id'
+	 *		'zap2it_id'
+	 *		'aliasnames'	- a list, if present.
 	 *
 	 *		@param {string} searchstring
 	 *		@param {apiCallback} cb			function(err, foundShows) where foundShows is the array.
@@ -200,9 +200,9 @@ var api = {
 	get_episodes_on_date: function(firstaired, properties, cb) {
 		if (properties === null) {
 			properties=['episodeid', 'tvdb_season', 'tvdb_episode', 'title',
-                        'art', 'show_fanart', 'show_thumbnail',
-                        'show_tvdb_id', 'show_name',  'have_state'
-                        ];
+						'art', 'show_fanart', 'show_thumbnail',
+						'show_tvdb_id', 'show_name',  'have_state'
+						];
 		}
 		return this._call('get_episodes_on_date', [firstaired, properties], cb);
 	},

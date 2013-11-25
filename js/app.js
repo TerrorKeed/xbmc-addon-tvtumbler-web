@@ -1,8 +1,8 @@
 var dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 var monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 var calendarProperties = ['episodeid', 'tvdb_season', 'tvdb_episode', 'title',
-                          'art', 'show_fanart', 'show_thumbnail', 'show_tvdb_id',
-                          'show_name', 'have_state'];
+						  'art', 'show_fanart', 'show_thumbnail', 'show_tvdb_id',
+						  'show_name', 'have_state'];
 
 $(document).ready(function() {
 	buildMenu();
@@ -66,54 +66,54 @@ function showShows()
 				'<td align="center" class="shwStatus"></td>' + 
 				'<td align="center" class="shwQuality"></td></tr>');
 		tr.children('td').each(function(index, td) {
-    		switch (index) {
-    		case 0:	//	Title
-    			$(td).text(d.name);
-    			break;
-    		case 1:	//	Followed
-    			if (d.followed) {
-    				$(td).text('Follow');
-    				$(td).addClass('follow');
-    			}
-    			else {
-    				$(td).text('Ignore');
-    				$(td).addClass('ignore');
-    			}
-    			break;
-    		case 2:	//	Status
-    			if (d.fast_status) {
-    				$(td).text(d.fast_status);
-    			}
-    			break;
-    		case 3:	//	Quality
-    			if (d.followed) {
-    				//	if we have an image for it, we use that.
-    				var imgName = quality.getImage(d.wanted_quality);
-    				//console.log('got image: ' + imgName);
-    				var labelName = quality.getLabel(d.wanted_quality);
-    				if (imgName) {
-    					var img = $('<div style="position: relative; height: 20px"><img src="images/' + imgName + '" class="imgQuality" /></div>');
-    					if (labelName) img.attr('title', labelName);
-    					$(td).html(img);
-    				}
-    				else {
-    					$(td).text(labelName);
-    				}
-    			}
-    			
-    			break;
-    		default:
-    			console.log('Too many columns in row!  Excepted 4!');
-    		}
-    	});
-    	
-    	return tr;
+			switch (index) {
+			case 0:	//	Title
+				$(td).text(d.name);
+				break;
+			case 1:	//	Followed
+				if (d.followed) {
+					$(td).text('Follow');
+					$(td).addClass('follow');
+				}
+				else {
+					$(td).text('Ignore');
+					$(td).addClass('ignore');
+				}
+				break;
+			case 2:	//	Status
+				if (d.fast_status) {
+					$(td).text(d.fast_status);
+				}
+				break;
+			case 3:	//	Quality
+				if (d.followed) {
+					//	if we have an image for it, we use that.
+					var imgName = quality.getImage(d.wanted_quality);
+					//console.log('got image: ' + imgName);
+					var labelName = quality.getLabel(d.wanted_quality);
+					if (imgName) {
+						var img = $('<div style="position: relative; height: 20px"><img src="images/' + imgName + '" class="imgQuality" /></div>');
+						if (labelName) img.attr('title', labelName);
+						$(td).html(img);
+					}
+					else {
+						$(td).text(labelName);
+					}
+				}
+				
+				break;
+			default:
+				console.log('Too many columns in row!  Excepted 4!');
+			}
+		});
+		
+		return tr;
 	}
 
 	var shows = {};
 	
 	api.get_all_shows(['tvshowid', 'name', 'tvdb_id',
-                                  'followed', 'wanted_quality', 'fast_status'], function(err, showsdata) {
+								  'followed', 'wanted_quality', 'fast_status'], function(err, showsdata) {
 		if (err) {
 			throw err;
 		}
@@ -145,15 +145,15 @@ function showShows()
 		//	We re-run the query in blocks this time, say 10 at a time.
 		var i,j,temparray,chunk = 10;
 		for (i=0,j=tvdb_ids.length; i<j; i+=chunk) {
-		    temparray = tvdb_ids.slice(i,i+chunk);
-		    
-		    api.get_shows(temparray, ['tvdb_id', 'status'], function (err, statusdata) {
-		    	$.each(statusdata, function(index, d) {
-		    		var s = shows[d.tvdb_id];
-		    		s.data.status = d.status;
-		    		s.tr.find('.shwStatus').text(d.status);
-		    	});
-		    });
+			temparray = tvdb_ids.slice(i,i+chunk);
+			
+			api.get_shows(temparray, ['tvdb_id', 'status'], function (err, statusdata) {
+				$.each(statusdata, function(index, d) {
+					var s = shows[d.tvdb_id];
+					s.data.status = d.status;
+					s.tr.find('.shwStatus').text(d.status);
+				});
+			});
 		}
 	});
 }
@@ -193,7 +193,7 @@ function showShow(tvdb_id) {
 	
 	
 	api.get_shows([tvdb_id], ['tvshowid', 'name', 'tvdb_id', 'followed', 'wanted_quality', 'fanart',
-	                          'status', 'thumbnail', 'poster', 'banner', 'year', 'country_code'], function(err, data) {
+							  'status', 'thumbnail', 'poster', 'banner', 'year', 'country_code'], function(err, data) {
 		if (err) {
 			throw err;
 		}
@@ -304,10 +304,10 @@ function showCalendar()
 				var epBlock = $('<div class="cal_episode"></div>');
 				
 				var imgPath = null;
-	            if (ep.art && ep.art.thumb) imgPath = ep.art.thumb;
-	            else if (ep.art && ep.art['tvshow.fanart']) imgPath = ep.art['tvshow.fanart'];
-	            else if (ep.show_fanart) imgPath = ep.show_fanart;
-	            else if (ep.show_thumbnail) imgPath = ep.show_thumbnail;
+				if (ep.art && ep.art.thumb) imgPath = ep.art.thumb;
+				else if (ep.art && ep.art['tvshow.fanart']) imgPath = ep.art['tvshow.fanart'];
+				else if (ep.show_fanart) imgPath = ep.show_fanart;
+				else if (ep.show_thumbnail) imgPath = ep.show_thumbnail;
 				if (imgPath) {
 					var img = $('<img src="' + makeImageUrl(imgPath) + '" class="epimg" />');
 					epBlock.append(img);
@@ -355,43 +355,43 @@ function showDownloads()
 	
 	function updateRow(tr, d, running) {
 		tr.children('td').each(function(index, td) {
-    		switch (index) {
-    		case 0:	//	Date
-    			$(td).text(timestampAsTime(d.start_time));
-    			break;
-    		case 1:	//	Title
-    			$(td).text(d.name);
-    			break;
-    		case 2:	//	Status
-    			if (running) {
-    				$(td).text(d.status_text);
-    				$(td).attr('class', 'Running');
-    			}
-    			else {
-    				$(td).text(d.final_status + ' (' + timedeltaFormat(d.start_time, d.finish_time) + ')');
-    				$(td).attr('class', d.final_status);
-    			}
-    			break;
-    		case 3:	//	Size
-    			if (running) {
-    				$(td).text(humanFileSize(d.downloaded_size)  + '/' + humanFileSize(d.total_size, '?'));
-    			}
-    			else {
-    				$(td).text(humanFileSize(d.total_size, ''));
-    			}
-    			break;
-    		case 4:	//	Source
-    			$(td).text(d.source);
-    			break;
-    		default:
-    			console.log('Too many columns in row!  Excepted 5!');
-    		}
-    	});
-    	
-    	return tr;
+			switch (index) {
+			case 0:	//	Date
+				$(td).text(timestampAsTime(d.start_time));
+				break;
+			case 1:	//	Title
+				$(td).text(d.name);
+				break;
+			case 2:	//	Status
+				if (running) {
+					$(td).text(d.status_text);
+					$(td).attr('class', 'Running');
+				}
+				else {
+					$(td).text(d.final_status + ' (' + timedeltaFormat(d.start_time, d.finish_time) + ')');
+					$(td).attr('class', d.final_status);
+				}
+				break;
+			case 3:	//	Size
+				if (running) {
+					$(td).text(humanFileSize(d.downloaded_size)  + '/' + humanFileSize(d.total_size, '?'));
+				}
+				else {
+					$(td).text(humanFileSize(d.total_size, ''));
+				}
+				break;
+			case 4:	//	Source
+				$(td).text(d.source);
+				break;
+			default:
+				console.log('Too many columns in row!  Excepted 5!');
+			}
+		});
+		
+		return tr;
 	}
 
-    //var full_refresh = false;
+	//var full_refresh = false;
 	var num_running = -1;
 	var dls = {};
 	var timerHandle = null;
@@ -475,11 +475,11 @@ function isoDate(dt) {
 	//	doesn't work, returns a UTC date.
 	//	return dt.toISOString().substring(0, 10);	
 	/*//	use this instead...
-    function pad(number) {
-        if ( number < 10 ) return '0' + number;
-        return number;
-    }
-    return dt.getFullYear() + '-' + pad( dt.getMonth() + 1 ) + '-' + pad( dt.getDate() );*/
+	function pad(number) {
+		if ( number < 10 ) return '0' + number;
+		return number;
+	}
+	return dt.getFullYear() + '-' + pad( dt.getMonth() + 1 ) + '-' + pad( dt.getDate() );*/
 	
 	//	moment makes this all very simple
 	return moment(dt).format('YYYY-MM-DD');
@@ -487,50 +487,50 @@ function isoDate(dt) {
 
 function timestampAsTime(ts) 
 {
-    dt = moment.unix(ts);
-    last_midnight = moment({hour: 0, minute: 0});
-    last_week = moment(last_midnight).subtract('days', 7);
-    if (dt.isAfter(last_midnight)) {
-        _fmt = 'HH:mm';
-    }
-    else if (dt.isAfter(last_week)) {
-        _fmt = 'ddd HH:mm';
-    }
-    else {
-        _fmt = 'YYYY-MM-DD';
-    }
-    return dt.format(_fmt);
+	dt = moment.unix(ts);
+	last_midnight = moment({hour: 0, minute: 0});
+	last_week = moment(last_midnight).subtract('days', 7);
+	if (dt.isAfter(last_midnight)) {
+		_fmt = 'HH:mm';
+	}
+	else if (dt.isAfter(last_week)) {
+		_fmt = 'ddd HH:mm';
+	}
+	else {
+		_fmt = 'YYYY-MM-DD';
+	}
+	return dt.format(_fmt);
 }
 
 function humanFileSize(bytes, zero_as, si) {
 	zero_as = typeof zero_as !== 'undefined' ? zero_as : '0';
 	si = typeof si !== 'undefined' ? si : false;
 	
-    var thresh = si ? 1000 : 1024;
-    if(bytes < thresh) return bytes + ' B';
-    var units = si ? ['kB','MB','GB','TB','PB','EB','ZB','YB'] : ['KiB','MiB','GiB','TiB','PiB','EiB','ZiB','YiB'];
-    var u = -1;
-    do {
-        bytes /= thresh;
-        ++u;
-    } while(bytes >= thresh);
-    return bytes.toFixed(1) + units[u];
+	var thresh = si ? 1000 : 1024;
+	if(bytes < thresh) return bytes + ' B';
+	var units = si ? ['kB','MB','GB','TB','PB','EB','ZB','YB'] : ['KiB','MiB','GiB','TiB','PiB','EiB','ZiB','YiB'];
+	var u = -1;
+	do {
+		bytes /= thresh;
+		++u;
+	} while(bytes >= thresh);
+	return bytes.toFixed(1) + units[u];
 }
 
 function timedeltaFormat(start_ts, end_ts) {
-    secs = end_ts - start_ts;
-    if (secs < 90) {
-    	return Math.round(secs)  + ' secs';
-    }
-    if (secs < 5400) {	//	1.5 hrs
-    	return Math.round(secs/60) + ' mins';
-    }
-    if (secs < 86400) {	//	24 hrs
-    	var div = Math.floor(secs/3600);
-    	var rem = Math.round((secs%3600)/60);
-    	return div + ' h ' + rem + ' m';
-    }
-    return Math.round(secs/3600) + ' hours';
+	secs = end_ts - start_ts;
+	if (secs < 90) {
+		return Math.round(secs)  + ' secs';
+	}
+	if (secs < 5400) {	//	1.5 hrs
+		return Math.round(secs/60) + ' mins';
+	}
+	if (secs < 86400) {	//	24 hrs
+		var div = Math.floor(secs/3600);
+		var rem = Math.round((secs%3600)/60);
+		return div + ' h ' + rem + ' m';
+	}
+	return Math.round(secs/3600) + ' hours';
 }
 
 /**
