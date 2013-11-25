@@ -106,7 +106,7 @@ var api = {
 	 *										the previous setting.
 	 */
 	set_show_wanted_quality: function(tvdb_id, wanted_quality, cb) {
-		return this._call('get_version', [tvdb_id, wanted_quality], cb);
+		return this._call('set_show_wanted_quality', [tvdb_id, wanted_quality], cb);
 	},
 	
 	/**

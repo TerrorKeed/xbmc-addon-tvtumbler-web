@@ -47,21 +47,24 @@ function selectMenu(item)
 function showShows()
 {
 	selectMenu('shows');
-	var tbl = $('<table id="showtable" style="margin: 0 auto;" cellspacing="0" cellpadding="0"></table>');
+	var tbl = $('<table id="showtable" cellspacing="0" cellpadding="0"></table>');
 	var thead = $('<thead><tr><th align="left">Title</th><th align="left">Follow</th><th align="center">Status</th><th align="center">Quality</th></tr></thead>');
 	var tbody = $('<tbody></tbody>');
 	$('#content').html(tbl.append(thead, tbody)).attr("class","shows loading");
 	
 	function newRow(d) {
-//	{
-//		fast_status: "Continuing"
-//		followed: true
-//		name: "Once Upon a Time (2011)"
-//		tvdb_id: "248835"
-//		tvshowid: 1152
-//		wanted_quality: 3
-//	}
-		var tr = $('<tr class="showrow"><td align="left"></td><td align="left"></td><td align="center"></td><td align="center"></td></tr>');
+		//	{
+		//		fast_status: "Continuing"
+		//		followed: true
+		//		name: "Once Upon a Time (2011)"
+		//		tvdb_id: "248835"
+		//		tvshowid: 1152
+		//		wanted_quality: 3
+		//	}
+		var tr = $('<tr class="showrow"><td align="left" class="shwTitle"></td>' +
+				'<td align="left" class="shwFollowed"></td>' +
+				'<td align="center" class="shwStatus"></td>' + 
+				'<td align="center" class="shwQuality"></td></tr>');
 		tr.children('td').each(function(index, td) {
     		switch (index) {
     		case 0:	//	Title
@@ -70,11 +73,11 @@ function showShows()
     		case 1:	//	Followed
     			if (d.followed) {
     				$(td).text('Follow');
-    				$(td).attr('class', 'follow');
+    				$(td).addClass('follow');
     			}
     			else {
     				$(td).text('Ignore');
-    				$(td).attr('class', 'ignore');
+    				$(td).addClass('ignore');
     			}
     			break;
     		case 2:	//	Status
@@ -109,7 +112,7 @@ function showShows()
 
 	var shows = {};
 	
-	api.get_all_shows(properties=['tvshowid', 'name', 'tvdb_id',
+	api.get_all_shows(['tvshowid', 'name', 'tvdb_id',
                                   'followed', 'wanted_quality', 'fast_status'], function(err, showsdata) {
 		if (err) {
 			throw err;
@@ -124,18 +127,143 @@ function showShows()
 			return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
 		});
 		
+		var tvdb_ids = []
 		$.each(showsdata, function(index, d) {
 			var tr = newRow(d);
+			tr.click(function() { showShow(d.tvdb_id); });
 			shows[d.tvdb_id] = {'tr': tr, 'data': d};
 			tbody.append(tr);
+			tvdb_ids.push(d.tvdb_id);
 		});
 		
 		//console.log(showsdata);
 		$('#content').removeClass('loading');
-			
+		
+		
+		//	We need to run the query again now, but this time just for the status (note that we used 
+		//	'fast_status' the previous run.
+		//	We re-run the query in blocks this time, say 10 at a time.
+		var i,j,temparray,chunk = 10;
+		for (i=0,j=tvdb_ids.length; i<j; i+=chunk) {
+		    temparray = tvdb_ids.slice(i,i+chunk);
+		    
+		    api.get_shows(temparray, ['tvdb_id', 'status'], function (err, statusdata) {
+		    	$.each(statusdata, function(index, d) {
+		    		var s = shows[d.tvdb_id];
+		    		s.data.status = d.status;
+		    		s.tr.find('.shwStatus').text(d.status);
+		    	});
+		    });
+		}
 	});
+}
+
+function showShow(tvdb_id) {
+	selectMenu('shows');//	just in case
+	
+	$('#content').html('<div id="showHead">\
+			<div id="showImgBlock"></div>\
+			<div id="showNameBlock"></div>\
+			<div id="showFollowedBlock"></div>\
+			<div id="showWantedQualityBlock" style="visibility: hidden">\
+				<table>\
+				<tr><td><span style="color: red">IGNORE</span><td/>\
+					<td><input type="radio" name="radWantQual" id="qNone" value="0" /></td>\
+					<td>Ignore: Do not retrieve new episodes from this show.</td>\
+				</tr>\
+				<tr><td><img src="images/' + quality.getImage(quality.SD_COMP) + '" /><td/>\
+					<td><input type="radio" name="radWantQual" id="qSD" value="s" /></td>\
+					<td>Follow SD: Download standard definition quality (480, 576, etc.).</td>\
+				</tr>\
+				<tr><td><img src="images/' + quality.getImage(quality.HD_COMP) + '" /><td/>\
+					<td><input type="radio" name="radWantQual" id="qHD" value="h" /></td>\
+					<td>Follow HD: Download high definition quality (720, 1080, etc.).</td>\
+				</tr>\
+				<tr><td><img src="images/' + quality.getImage(quality.ANY) + '" /><td/>\
+					<td><input type="radio" name="radWantQual" id="qANY" value="a" /></td>\
+					<td>Follow ANY: Download any quality available (prefer smaller file size).</td>\
+				</tr>\
+				</table>\
+			</div>\
+			<div id="showStatusBlock"></div>\
+			<div id="showYearBlock"></div>\
+			<div id="showCountryBlock"></div>\
+			</div>').attr("class","show loading");
 	
 	
+	
+	api.get_shows([tvdb_id], ['tvshowid', 'name', 'tvdb_id', 'followed', 'wanted_quality', 'fanart',
+	                          'status', 'thumbnail', 'poster', 'banner', 'year', 'country_code'], function(err, data) {
+		if (err) {
+			throw err;
+		}
+		
+		var d = data[0];	//	there'll only be one entry
+		console.log(d);
+		
+		if (d.poster) {
+			$('#showImgBlock').html('<img src="' + makeImageUrl(d.poster) + '" />');
+		}
+		else if (d.thumbnail) {
+			$('#showImgBlock').html('<img src="' + makeImageUrl(d.thumbnail) + '" />');
+		}
+		else if (d.fanart) {
+			$('#showImgBlock').html('<img src="' + makeImageUrl(d.fanart) + '" />');
+		}
+		
+		if (d.fanart) {
+			$('#containerBg').css('background-image', 'url(' + makeImageUrl(d.fanart) + ')');
+		}
+		
+		$('#showNameBlock').text(d.name);
+		
+		if (d.followed) {
+			switch (d.wanted_quality) 
+			{
+			case quality.SD_COMP:
+				$('#qSD').prop('checked', true);
+				break;
+			case quality.HD_COMP:
+				$('#qHD').prop('checked', true);
+				break;
+			case quality.ANY:
+				$('#qANY').prop('checked', true);
+				break;
+			}
+		}
+		else {
+			//	not followed
+			$('#qNone').prop('checked', true);
+		}
+		
+		$("#qNone, #qSD, #qHD, #qANY").change(function () {
+			var newVal = $("input:radio[name='radWantQual']:checked").val();	//	"0", "s", "h", or "a"
+			
+			if (newVal === '0') {
+				//	not followed:
+				api.set_show_followed(tvdb_id, false, function(err) {
+					if (err) throw err;
+				});
+			}
+			else {
+				var qual = (newVal === 's') ? quality.SD_COMP : (newVal === 'h') ? quality.HD_COMP : quality.ANY;
+				api.set_show_followed(tvdb_id, true, function(err) {
+					if (err) throw err;
+					api.set_show_wanted_quality(tvdb_id, qual, function(err) {
+						if (err) throw err;
+					});
+				});
+			}
+		});
+
+		$('#showWantedQualityBlock').css('visibility', 'visible');
+		$('#showStatusBlock').text(d.status);
+		$('#showYearBlock').text(d.year);
+		$('#showCountryBlock').html('<img src="images/flags-iso/shiny/48/' + 
+				(d.country_code ? d.country_code : '_unknown')  + '.png" />');
+		
+		$('#content').removeClass('loading');
+	});
 }
 
 function showCalendar()
