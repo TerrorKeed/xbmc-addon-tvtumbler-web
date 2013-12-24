@@ -16,7 +16,14 @@ var api = {
 		return this._server.call(
 			method, args,
 			function(result) { if (callback) return callback(null, result); },
-			function(error)  { if (callback) return callback(error); }
+			function(error)  { 
+				
+				console.error('Error from jsonrpc: ' + error.message, 
+						'Method: ' + method,
+						'Args: ', args,
+						error);
+				if (callback) return callback(error); 
+			}
 		);
 	},
 	
@@ -176,14 +183,14 @@ var api = {
 	 * 		@param {int|string} tvdb_id		tvdb_id to add.
 	 * 		@param {boolean} followed		true or false.  (care: if false it will be deleted automatically later)
 	 * 		@param {int} wanted_quality		One of the python tvtumbler.quality values.  Default is 3 (SDTV | SDDVD).
-	 * 		@param {apiCallback} cb			Always returns True, unless the error is set. 
+	 * 		@param {apiCallback} cb			Always returns true, unless the error is set. 
 	 */
 	add_show: function(tvdb_id, followed, wanted_quality, cb) {
 		if (followed === null) {
-			followed = True;
+			followed = true;
 		}
 		if (wanted_quality === null) {
-			wanted_quality = 3;	//quality.SD_COMP
+			wanted_quality = quality.SD_COMP;
 		}
 		return this._call('add_show', [tvdb_id, followed, wanted_quality], cb);
 	},
@@ -206,6 +213,40 @@ var api = {
 		}
 		return this._call('get_episodes_on_date', [firstaired, properties], cb);
 	},
+	
+	/**
+	 * Get an array of seasons for this show.
+	 * 
+	 * 		@param {int|string} tvdb_id		tvdb_id
+	 * 		@param {apiCallback} cb			function(err, seasons) where seasons is the array.
+	 */
+    get_seasons: function(tvdb_id, cb) {
+    	return this._call('get_seasons', [tvdb_id], cb);
+    },
+    
+    /**
+     * Get episodes in a season.
+     * 
+     * 		@param {int} tvdb_id			Show to search.
+     * 		@param {int} tvdb_season		Season to search.  Use zero (0) for specials.
+     * 		@param {array} properties		An array of strings.  The properties wanted.  See the python code
+	 * 										tvtumbler.comms.server.Service for a list of possible values.  Use null
+	 * 										for the defaults.
+     * 		@param {apiCallback} cb			The callback receives an array of objects.
+     */
+    get_episodes_in_season: function(tvdb_id, tvdb_season, properties, cb) {
+    	if (properties === null) {
+    		properties = ['episodeid', 'tvdb_season', 'tvdb_episode', 'title', 'have_state'];
+    	}
+    	return this._call('get_episodes_in_season', [tvdb_id, tvdb_season, properties], cb);
+    },
+    
+    /**
+     * Refresh the episode list for a series.  Always returns True.
+     */
+    refresh_episodes: function(tvdb_id, cb) {
+    	return this._call('refresh_episodes', [tvdb_id], cb);
+    }
 }
 
 /**
